@@ -46,3 +46,34 @@ Given the specification for a number above, the value `01` would be invalid. But
 
 ## How to generate types from a CFG, and what's the purpose of it?
 
+Every rule of a context-free grammar can be converted into a type, such that all the types can be described in terms of the types converted from other rules of the grammar. This way, you can unambiguously re-create the grammar rules while guaranteeing [type safety](https://en.wikipedia.org/wiki/Type_safety). Some [dynamically typed languages](https://en.wikipedia.org/wiki/Dynamic_programming_language) have features to emulate type safety, such as [type hints for Python](https://docs.python.org/3/library/typing.html) or [JSDoc for JavaScript](https://jsdoc.app/), but they don't provide any real guarantees compared to statically typed languages.
+
+If you re-create the grammar rules in a type safe fashion, you get the benefit that all type constructions are already constrained by the rules of that grammar. Concretely, this is equivalent to saying that you cannot create a number that starts with `0`, because the type hierarchy that you get from converting the grammar simply does not allow it. For more complex specifications, such as the JSON or YAML format, it means that you cannot accidentally create typos. Whatever output your create from the type hierarchy will be what's called *syntactically valid*.
+
+Here's what the numbers grammar may look like when the BNF notation is converted to C#, which is a type-safe language:
+
+```cs
+// Interfaces represent BNF rule symbols
+public interface INumber {}
+public interface IDigit {}
+public interface INonZeroDigit : INumber, IDigit {} // ABBA mnemonic - if A ::= B then IB : IA
+
+// Equivalent to the number ::= <number> <digit> definition part
+public record NumberSymbol(INumber Number, IDigit Digit) : INumber; // The EBNF equivalent could be something like NumberSymbol(INonZeroDigit NonZeroDigit, List<IDigit> Digits)
+
+// Equivalent to <digit> ::= "0"
+public record Zero : IDigit;
+
+// Equivalent to <non-zero-digit> ::= ...
+public record One : INonZeroDigit;
+public record Two : INonZeroDigit;
+public record Three : INonZeroDigit;
+public record Four : INonZeroDigit;
+public record Five : INonZeroDigit;
+public record Six : INonZeroDigit;
+public record Seven : INonZeroDigit;
+public record Eight : INonZeroDigit;
+public record Nine : INonZeroDigit;
+```
+
+If you play around with this type hierarchy, you'll find that an instance of an `INumber` can be either an `INonZeroDigit` through the `Zero` type, or a `NumberSymbol` that wraps an `INumber` and an `IDigit`. This means it's impossible to create an `INumber` that is a `Zero` followed by one or more digits, even by accident.
