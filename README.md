@@ -12,8 +12,8 @@ The description above is quite vague, so consider the following example of a con
 
 ```
 <number> = <non-zero-digit> | <number> <digit>
-<non-zero-digit> = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
 <digit> = "0" | <non-zero-digit>
+<non-zero-digit> = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
 ```
 
 This simple context-free grammar says that a `number` is either a `non-zero-digit` (a single digit 1~9 but not 0), or that it is a `number` followed by any `digit` (which may include 0). This means that `5` is a valid number according to the rules, but it also means that `50` (which is `5` followed by a `0`) is itself also a valid number. Let's define this same context-free grammar using another notation called [Extended Backus-Naur Form (EBNF)](https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form), commonly used by the [ANTLR](https://en.wikipedia.org/wiki/ANTLR) project to describe programming languages. This notation uses the `*` symbol to mean *zero or more occurrences*, which makes things a bit more readable than standard BNF.
@@ -25,12 +25,12 @@ number
     : nonZeroDigit digit*
     ;
 
-nonZeroDigit
-    : '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'
-    ;
-
 digit
     : '0' | nonZeroDigit
+    ;
+
+nonZeroDigit
+    : '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'
     ;
 ```
 
