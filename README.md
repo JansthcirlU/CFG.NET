@@ -2,6 +2,43 @@
 
 Parsing and generating types from context-free grammars using F#.
 
+## Overview
+
+This repository contains the source code for the `dotnet-cfg` CLI tool, which can be invoked to convert context-free grammars into types for a variety of programming languages. Using the base command `dotnet cfg`, the CLI tool will provide subcommands for each language for which type generation is supported. This tool is still in its early stages of development, so make sure to check the [enhancement issues](https://github.com/JansthcirlU/CFG.NET/issues?q=is%3Aissue%20state%3Aopen%20label%3Aenhancement) to see which features are currently planned.
+
+### Command structure
+
+The base `dotnet cfg` command branches out into subcommands for each supported language, where each language subcommand has its own language-specific flags.
+The `--output` and `--no-builders` flags are available for every language, where `--output` lets you set the path at which to generate the types, and the `--no-builders` flag can be used to indicate that the tool should not automatically generate builders for the generated types.
+
+You can also use the `--help` flag for more information about the command you're trying to call.
+
+#### C# type generation
+
+```
+dotnet cfg csharp <CFG_FILE_PATH> 
+    [-ns|--namespace <NAMESPACE_NAME>]
+    [-o|--output <OUTPUT_DIRECTORY>]
+    [-nb|--no-builders]
+
+dotnet cfg csharp -h|--help
+```
+
+You can also use the `dotnet cfg cs` alias.
+
+#### Python type generation
+
+```
+dotnet cfg python <CFG_FILE_PATH>
+    [-t|--typing]
+    [-o|--output <OUTPUT_DIRECTORY>]
+    [-nb|--no-builders]
+
+dotnet cfg python -h|--help
+```
+
+You can also use the `dotnet cfg py` alias.
+
 ## What are context-free grammars, and why are they useful?
 
 You can think of a [context-free grammar (CFG)](https://en.wikipedia.org/wiki/Context-free_grammar) as a set of rules, written following a consistent notation, that can describe or define pretty much anything.
