@@ -143,7 +143,7 @@ Using a number builder that only exposes methods to build a syntactically valid 
 
 ```cs
 INumber oneTwoThreeZero = NumberBuilder
-    .One() // First builder method call can not be 'Zero'
+    .One() // First builder method call cannot be 'Zero'
     .Two()
     .Three()
     .Zero() // Subsequent builder method calls can be 'Zero'
