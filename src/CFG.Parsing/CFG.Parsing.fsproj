@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="SingleLineString.fs" />
     <Compile Include="ContextFreeGrammar.fs" />
   </ItemGroup>
 
